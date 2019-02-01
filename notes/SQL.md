@@ -30,7 +30,7 @@
 
 模式定义了数据如何存储、存储什么样的数据以及数据如何分解等信息，数据库和表都有模式。
 
-主键的值不允许修改，也不允许复用（不能使用已经删除的主键值赋给新数据行的主键）。
+主键的值不允许修改，也不允许复用（不能将已经删除的主键值赋给新数据行的主键）。
 
 SQL（Structured Query Language)，标准 SQL 由 ANSI 标准委员会管理，从而称为 ANSI SQL。各个 DBMS 都有自己的实现，如 PL/SQL、Transact-SQL 等。
 
@@ -40,21 +40,26 @@ SQL 支持以下三种注释：
 
 ```sql
 # 注释
+
 SELECT *
 FROM mytable; -- 注释
+
 /* 注释1
    注释2 */
+
 ```
 
 # 二、创建表
 
 ```sql
 CREATE TABLE mytable (
-  id INT NOT NULL AUTO_INCREMENT,
-  col1 INT NOT NULL DEFAULT 1,
-  col2 VARCHAR(45) NULL,
-  col3 DATE NULL,
-  PRIMARY KEY (`id`));
+  id INT NOT NULL AUTO_INCREMENT, -- 整型-32768~32767，不为空，且自增
+  col1 INT NOT NULL DEFAULT 1, -- 整数，不为空，为空则默认填入1
+  col2 VARCHAR(45) NULL, -- 字符串，可为空
+  col3 DATE NULL, -- 日期和时间
+  col4 LONG NULL, -- 长整型-2147483648~2147483647
+  col5 DOUBLE NULL, -- 双精度浮点(处理小数)
+  PRIMARY KEY (`id`)); -- 主键为id
 ```
 
 # 三、修改表
@@ -63,7 +68,7 @@ CREATE TABLE mytable (
 
 ```sql
 ALTER TABLE mytable
-ADD col CHAR(20);
+ADD col CHAR(20); -- 新列为字符串
 ```
 
 删除列
@@ -84,38 +89,38 @@ DROP TABLE mytable;
 普通插入
 
 ```sql
-INSERT INTO mytable(col1, col2)
-VALUES(val1, val2);
+INSERT INTO mytable(col1, col2) -- 指定插入的列
+VALUES(val1, val2); -- 插入列的数值
 ```
 
 插入检索出来的数据
 
 ```sql
-INSERT INTO mytable1(col1, col2)
+INSERT INTO mytable1(col1, col2) -- 指定插入的列
 SELECT col1, col2
-FROM mytable2;
+FROM mytable2; -- 插入列的值通过查询获得
 ```
 
 将一个表的内容插入到一个新表
 
 ```sql
-CREATE TABLE newtable AS
-SELECT * FROM mytable;
+CREATE TABLE newtable AS -- 对创建的新表赋值，表中列的属性 默认为字符串
+SELECT * FROM mytable; -- 新表的值通过查询获得
 ```
 
 # 五、更新
 
 ```sql
 UPDATE mytable
-SET col = val
-WHERE id = 1;
+SET col = val  -- 将表中col列的值更新为val
+WHERE id = 1; -- 筛选更新值的行条件
 ```
 
 # 六、删除
 
 ```sql
 DELETE FROM mytable
-WHERE id = 1;
+WHERE id = 1; -- 删除指定的行
 ```
 
 **TRUNCATE TABLE**  可以清空表，也就是删除所有行。
@@ -156,7 +161,7 @@ LIMIT 0, 5;
 ```sql
 SELECT *
 FROM mytable
-LIMIT 2, 3;
+LIMIT 2, 3; -- 行数从0 开始, 第3行, 返回3行
 ```
 
 
@@ -180,7 +185,7 @@ ORDER BY col1 DESC, col2 ASC;
 ```sql
 SELECT *
 FROM mytable
-WHERE col IS NULL;
+WHERE col IS NULL; -- 将指定列中值为null的行过滤出来
 ```
 
 下表显示了 WHERE 子句可用的操作符
